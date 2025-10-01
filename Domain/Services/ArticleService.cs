@@ -15,7 +15,7 @@ namespace Domain.Services
             _articleRepo = articleRepo;
         }
 
-        public async Task<Article> GetByIdAsync(int id)
+        public async Task<Article> GetByIdAsync(Guid id)
         {
             return await _articleRepo.GetByIdAsync(id);
         }
@@ -37,9 +37,9 @@ namespace Domain.Services
             return await _articleRepo.UpdateAsync(article);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> RemoveAsync(Article article)
         {
-            var entity = await _articleRepo.GetByIdAsync(id);
+            var entity = await _articleRepo.GetByIdAsync(article.Id);
 
             return await _articleRepo.RemoveAsync(entity);
         }

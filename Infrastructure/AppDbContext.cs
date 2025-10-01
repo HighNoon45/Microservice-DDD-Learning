@@ -30,12 +30,14 @@ namespace Infrastructure
                 .WithMany(x => x.Costs)
                 .HasForeignKey(x => x.PricingId) ;
 
-            modelBuilder.Entity<Margin>().HasQueryFilter(x => !x.IsDeleted)
+            modelBuilder.Entity<Margin>()
+                .HasQueryFilter(x => !x.IsDeleted)
                 .HasOne<Pricing>()
                 .WithMany(x => x.Margins)
                 .HasForeignKey(x => x.PricingId);
             
-            modelBuilder.Entity<Markup>().HasQueryFilter(x => !x.IsDeleted)
+            modelBuilder.Entity<Markup>()
+                .HasQueryFilter(x => !x.IsDeleted)
                 .HasOne<Pricing>()
                 .WithMany(x => x.Markups)
                 .HasForeignKey(x => x.PricingId);

@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
             _dbSet = context.Set<Article>();
         }
 
-        public async Task<Article> GetByIdAsync(int id)
+        public async Task<Article> GetByIdAsync(Guid id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity == null)

@@ -19,19 +19,19 @@ namespace Domain.Services
             _pricingRepo = pricingRepo;
         }
 
-        public async Task<Pricing> GetByIdAsync(int id)
+        public async Task<Pricing> GetByIdAsync(Guid id)
         {
             return await _pricingRepo.GetByIdAsync(id);
         }
 
-        public async Task<Pricing> GetLatestByIdAsync(int id)
+        public async Task<Pricing> GetByArticleIdAsync(Guid articleId)
         {
-            var entity = await _pricingRepo.GetByIdAsync(id);
-            entity.Costs.OrderBy(x => x.ValidFrom);
-            entity.Margins.OrderBy(x => x.ValidFrom);
-            entity.Markups.OrderBy(x => x.ValidFrom);
+            return await _pricingRepo.GetByArticleId(articleId);
+        }
 
-            return entity;
+        public async Task<Pricing> GetByArticleIdAndDateAsync(Guid articleId, DateTime date)
+        {
+            return await _pricingRepo.GetByArticleIdAndDateAsync(articleId, date);
         }
 
         public async Task<List<Pricing>> GetAllAsync()
@@ -52,8 +52,8 @@ namespace Domain.Services
                 pricing.Costs,
                 newPricing.Costs,
                 c => c.Id,
-                remove => pricing.RemoveCost(remove),
-                add => pricing.AddCost(add),
+                pricing.RemoveCost,
+                pricing.AddCost,
                 (existing, incoming) =>
                 {
                     pricing.UpdateCost(incoming);
@@ -71,8 +71,8 @@ namespace Domain.Services
                 pricing.Margins,
                 newPricing.Margins,
                 m => m.Id,
-                remove => pricing.RemoveMargin(remove),
-                add => pricing.AddMargin(add),
+                pricing.RemoveMargin,
+                pricing.AddMargin,
                 (existing, incoming) =>
                 {
                     pricing.UpdateMargin(incoming);
@@ -90,8 +90,8 @@ namespace Domain.Services
                 pricing.Markups,
                 newPricing.Markups,
                 m => m.Id,
-                remove => pricing.RemoveMarkup(remove),
-                add => pricing.AddMarkup(add),
+                pricing.RemoveMarkup,
+                pricing.AddMarkup,
                 (existing, incoming) =>
                 {
                     pricing.UpdateMarkup(incoming);

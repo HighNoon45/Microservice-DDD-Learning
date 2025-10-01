@@ -10,7 +10,7 @@ namespace Domain.Entities.PricingAggregate
 {
     public class Cost : BaseEntity, IAggregateRoot, IPricingPrincipal
     {
-        protected Cost() { }
+        private Cost() { }
         public decimal Value { get; init; }
         public DateTime ValidFrom { get; init; }
         public DateTime ValidTo { get; init; }

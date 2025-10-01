@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Utils
 {
-    public static class CollectionSync
+    public static class CollectionSync //Do not redeem
     {
-        /// <summary>
-        /// Synchronizes an existing collection with a new collection.
-        /// Executes remove, add and update actions accordingly.
-        /// </summary>
         public static void SyncCollections<T>(
             IEnumerable<T> existing,
             IEnumerable<T> incoming,
-            Func<T, int> getKey,              // how to identify an element (usually Id)
-            Action<T> removeAction,           // what to do when element is missing
-            Action<T> addAction,              // what to do when element is new
-            Action<T, T> updateAction         // what to do when element exists in both
+            Func<T, Guid> getKey,
+            Action<T> removeAction,
+            Action<T> addAction,
+            Action<T, T> updateAction
         ) where T : class, IPricingPrincipal
         {
             var existingDict = existing.ToDictionary(getKey);
@@ -35,7 +31,7 @@ namespace Domain.Services.Utils
             // Add or update items
             foreach (var inc in incomingDict.Values)
             {
-                if (!existingDict.TryGetValue(getKey(inc), out var ex))
+                if (!existingDict.TryGetValue(getKey(inc), out T? ex))
                 {
                     addAction(inc);
                 }

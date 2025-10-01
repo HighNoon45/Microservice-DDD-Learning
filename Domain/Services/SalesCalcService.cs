@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,31 +9,34 @@ namespace Domain.Services
 {
     public static class SalesCalcService
     {
-            //public static SalesCalcService Calculate(PriceCompositeVO priceCompositeVO)
-            //{
-            //    var priceFloor = SetPriceFloor(priceCompositeVO.AcquisitionCost.PurchasePrice, priceCompositeVO.Margin.MarginPercentage);
-            //    var retailPrice = SetRetailPrice(priceFloor, priceCompositeVO.Markup.MarkupPercentage);
-            //    var discountCap = SetDiscountCap(retailPrice, priceFloor);
+        public readonly record struct PricingComponents(decimal PriceFloor, decimal RetailPrice, decimal DiscountCap);
+        public static Result<PricingComponents> Calculate(Cost cost, Margin margin, Markup markup)
+        {
+            if (cost.Value <= 0)
+                return ResultErrors.ZeroCostDivision;
 
-            //    return (new SalesInfoValueObject(priceFloor, retailPrice, discountCap));
-            //}
+            var priceFloor = SetPriceFloor(cost.Value, margin.Percentage);
+            var retailPrice = SetRetailPrice(priceFloor, markup.Percentage);
+            var discountCap = SetDiscountCap(retailPrice, priceFloor);
 
-            //private static decimal SetPriceFloor(decimal acquititionCostPrice, decimal marginPercentage)
-            //{
-            //    marginPercentage = marginPercentage / 100; // Convert percentage to decimal
-            //    return acquititionCostPrice * (1 + marginPercentage);
+            return new PricingComponents(priceFloor, retailPrice, discountCap);
+        }
 
-            //}
+        private static decimal SetPriceFloor(decimal costValue, decimal marginPercentage)
+        {  
+            marginPercentage = marginPercentage / 100; // Convert percentage to decimal
+            return costValue * (1 + marginPercentage);   
+        }
 
-            //private static decimal SetRetailPrice(decimal priceFloor, decimal markupPercentage)
-            //{
-            //    markupPercentage = markupPercentage / 100; // Convert percentage to decimal
-            //    return priceFloor * (1 + markupPercentage);
-            //}
+        private static decimal SetRetailPrice(decimal priceFloor, decimal markupPercentage)
+        {
+            markupPercentage = markupPercentage / 100; // Convert percentage to decimal
+            return priceFloor * (1 + markupPercentage);
+        }
 
-            //private static decimal SetDiscountCap(decimal retailPrice, decimal priceFloor)
-            //{
-            //    return (retailPrice - priceFloor) / retailPrice;
-            //}
+        private static decimal SetDiscountCap(decimal retailPrice, decimal priceFloor)
+        {
+            return (retailPrice - priceFloor) / retailPrice;
+        }
     }
 }

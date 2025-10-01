@@ -10,11 +10,11 @@ namespace Domain.Entities.PricingAggregate
 {
     public class Markup : BaseEntity, IAggregateRoot, IPricingPrincipal
     {
-        protected Markup() { }
+        private Markup() { }
         public decimal Percentage { get; init; }
         public DateTime ValidFrom { get; init; }
         public DateTime ValidTo { get; init; }
-        public int PricingId { get; private set; }
+        public Guid PricingId { get; private set; }
         public bool IsDeleted { get; private set; } = false;
 
 

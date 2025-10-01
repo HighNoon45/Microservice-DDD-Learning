@@ -8,8 +8,9 @@ namespace Domain.Interfaces.Services
 {
     public interface IPricingService
     {
-        Task<Pricing> GetByIdAsync(int id);
-        Task<Pricing> GetLatestByIdAsync(int id);
+        Task<Pricing> GetByIdAsync(Guid id);
+        Task<Pricing> GetByArticleIdAsync(Guid articleId);
+        Task<Pricing> GetByArticleIdAndDateAsync(Guid articleId, DateTime date);
         Task<List<Pricing>> GetAllAsync();
         Task<Pricing> AddAsync(Pricing entity);
         Task<Pricing> SyncCostsAsync(Pricing newPricing);

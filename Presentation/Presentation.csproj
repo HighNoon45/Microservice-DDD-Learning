@@ -24,7 +24,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Controllers\" />
+	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	  <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+	  <ProjectReference Include="..\RabbitMQ\RabbitMQ.csproj" />
 	</ItemGroup>
 
 </Project>

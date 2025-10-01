@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Specifications;
 using Infrastructure.Queries;
 using Domain.Interfaces.Repositories;
 
@@ -23,7 +22,7 @@ namespace Infrastructure.Repositories
             _dbSet = context.Set<Pricing>();
         }
 
-        public async Task<Pricing> GetByIdAsync(int id)
+        public async Task<Pricing> GetByIdAsync(Guid id)
         {
             var entity = await PricingQueries.IncludeAll(_dbSet).FirstOrDefaultAsync( x => x.Id == id);
             if (entity == null)
@@ -32,9 +31,17 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
-        public async Task<IEnumerable<Pricing>> GetByArticleIdAndDateAsync(int articleId, DateTime date)
+        public async Task<Pricing> GetByArticleId(Guid articleId)
         {
-            var entity = await PricingQueries.IncludeAllWithArtticleIdAndOnDate(articleId, date)(_dbSet).ToListAsync();
+            var entity = await PricingQueries.IncludeAllWithArticleId(articleId)(_dbSet).FirstOrDefaultAsync();
+            if (entity == null)
+                throw new EntityNotFoundException(EntityName, articleId);
+            return entity;
+        }
+
+        public async Task<Pricing> GetByArticleIdAndDateAsync(Guid articleId, DateTime date)
+        {
+            var entity = await PricingQueries.IncludeAllWithArtticleIdAndOnDate(articleId, date)(_dbSet).FirstOrDefaultAsync();
             if (entity == null)
                 throw new EntityNotFoundException(EntityName, articleId, date);
 

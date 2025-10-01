@@ -10,7 +10,7 @@ namespace Domain.Entities.PricingAggregate
 {
     public class Margin : BaseEntity, IAggregateRoot, IPricingPrincipal
     {
-        protected Margin() { }
+        private Margin() { }
         public decimal Percentage { get; init; }
         public DateTime ValidFrom { get; init; }
         public DateTime ValidTo { get; init; }

@@ -1,3 +1,8 @@
+using Domain.Interfaces.Repositories;
+using Domain.Services;
+using Infrastructure;
+using Infrastructure.Repositories;
+
 
 namespace Presentation
 {
@@ -8,6 +13,14 @@ namespace Presentation
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddScoped<IArticleRepo, ArticleRepo>();
+            builder.Services.AddScoped<IPricingRepo, PricingRepo>();
+
+            builder.Services.AddScoped<IArticleService, ArticleService>();
+            builder.Services.AddScoped<IPricingService, PricingService>();
+
+            builder.Services.AddDbContext<AppDbContext>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

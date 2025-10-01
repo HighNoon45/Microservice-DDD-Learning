@@ -8,7 +8,7 @@ namespace Domain.Interfaces.Repositories
 {
     public interface IArticleRepo
     {
-        Task<Article> GetByIdAsync(int id);
+        Task<Article> GetByIdAsync(Guid id);
         Task<List<Article>> GetAllAsync();
         Task<Article> AddAsync(Article entity);
         Task<Article> UpdateAsync(Article entity);

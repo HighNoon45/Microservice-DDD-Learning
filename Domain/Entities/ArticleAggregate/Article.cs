@@ -11,8 +11,9 @@ namespace Domain.Entities.ArticleAggregate
 {
     public class Article : BaseEntity, IAggregateRoot
     {
-        public string Nr {  get; private set; }
-        public string Name { get; private set; }
+        private Article() { }
+        public string Nr { get; private set; } = string.Empty;
+        public string Name { get; private set; } = string.Empty;
 
         public Article(string nr, string name)
         {

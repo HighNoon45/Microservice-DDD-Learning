@@ -6,10 +6,10 @@ namespace Domain.Interfaces.Services
 {
     public interface IArticleService
     {
-        Task<Article> GetByIdAsync(int id);
+        Task<Article> GetByIdAsync(Guid id);
         Task<List<Article>> GetAllAsync();
         Task<Article> CreateAsync(Article article);
         Task<Article> UpdateAsync(Article article);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> RemoveAsync(Article article);
     }
 }
